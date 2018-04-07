@@ -20,15 +20,15 @@ class ArticlePage extends StatefulWidget {
 }
 
 class ArticlePageState extends State<ArticlePage> {
-  // String nibble = "";
   Map nibble;
   String nibbleText = "";
   String nibbleReduction = "";
+  bool buttonSelected = false;
 
   @override
   void initState() {
     super.initState();
-    // getNibble();
+    getNibble();
   }
 
   @override
@@ -56,7 +56,8 @@ class ArticlePageState extends State<ArticlePage> {
 
     print(data);
 
-    var formattedNibble = data['sm_api_content'].replaceAll(RegExp(r"(\[BREAK\])"), "\n\n");
+    var formattedNibble =
+        data['sm_api_content'].replaceAll(RegExp(r"(\[BREAK\])"), "\n\n");
 
     data['sm_api_content'] = formattedNibble;
 
@@ -109,24 +110,46 @@ class ArticlePageState extends State<ArticlePage> {
             ),
           ),
           new Divider(),
-          new Chip(
-            label: new Text(
-              nibble == null
-              ? ""
-              : "${nibble['sm_api_content_reduced']} reduced",
-              style: new TextStyle(
-                color: Colors.white,
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              new Chip(
+                label: new Text(
+                  nibble == null
+                      ? "xx% summarized"
+                      : "${nibble['sm_api_content_reduced']} reduced",
+                  style: new TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                // backgroundColor: Theme.of(context).primaryColor,
+                backgroundColor: nibble == null ? Colors.transparent :Colors.green,
               ),
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
+              new IconButton(
+                icon: new Icon(Icons.thumb_up),
+                color: buttonSelected == true ? Colors.grey : Theme.of(context).primaryColor,
+                onPressed: () {
+                  this.setState(() {
+                    buttonSelected = !buttonSelected;
+                  });
+                },
+              ),
+              new IconButton(
+                icon: new Icon(Icons.thumb_down),
+                color: buttonSelected == true ? Theme.of(context).primaryColor : Colors.grey,
+                onPressed: () {
+                  this.setState(() {
+                    buttonSelected = !buttonSelected;
+                  });
+                },
+              ),
+            ],
           ),
           new Padding(
             padding: const EdgeInsets.all(8.0),
             child: new Text(
               // nibble['sm_api_content'].replaceAll(RegExp(r"(\[BREAK\])"), "\n"),
-              nibble == null
-              ? ""
-              : nibble['sm_api_content'],
+              nibble == null ? "" : nibble['sm_api_content'],
               style: Theme.of(context).textTheme.body1,
             ),
           ),
