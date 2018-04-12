@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import './article_bar.dart';
 import './key.dart';
 
 class ArticlePage extends StatefulWidget {
@@ -21,9 +22,6 @@ class ArticlePage extends StatefulWidget {
 
 class ArticlePageState extends State<ArticlePage> {
   Map nibble;
-  String nibbleText = "";
-  String nibbleReduction = "";
-  bool buttonSelected = false;
 
   @override
   void initState() {
@@ -110,41 +108,7 @@ class ArticlePageState extends State<ArticlePage> {
             ),
           ),
           new Divider(),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              new Chip(
-                label: new Text(
-                  nibble == null
-                      ? "xx% summarized"
-                      : "${nibble['sm_api_content_reduced']} reduced",
-                  style: new TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                // backgroundColor: Theme.of(context).primaryColor,
-                backgroundColor: nibble == null ? Colors.transparent :Colors.green,
-              ),
-              new IconButton(
-                icon: new Icon(Icons.thumb_up),
-                color: buttonSelected == true ? Colors.grey : Theme.of(context).primaryColor,
-                onPressed: () {
-                  this.setState(() {
-                    buttonSelected = !buttonSelected;
-                  });
-                },
-              ),
-              new IconButton(
-                icon: new Icon(Icons.thumb_down),
-                color: buttonSelected == true ? Theme.of(context).primaryColor : Colors.grey,
-                onPressed: () {
-                  this.setState(() {
-                    buttonSelected = !buttonSelected;
-                  });
-                },
-              ),
-            ],
-          ),
+          new ArticleBar(reducedPercentage: nibble == null ? "" : nibble['sm_api_content_reduced']),
           new Padding(
             padding: const EdgeInsets.all(8.0),
             child: new Text(
