@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 import './external_bar.dart';
 import './article_bar.dart';
@@ -79,12 +80,24 @@ class ArticlePageState extends State<ArticlePage> {
     timeDilation = 2.0;
 
     return new Scaffold(
-      appBar: new AppBar(title: Text("Article")),
+      appBar: new AppBar(title: Text("Nibble")),
       body: ListView(
         children: <Widget>[
           new InkWell(
             onTap: () {
-              launchURL(widget.article['url']);
+              // selectedBrowser == 'external' ?  :
+              // launchURL(widget.article['url']);
+              Navigator.push(
+                context,
+                new MaterialPageRoute(
+                  builder: (context) => new WebviewScaffold(
+                        url: widget.article['url'],
+                        appBar: new AppBar(
+                          title: new Text(widget.article['source']['name']),
+                        ),
+                      ),
+                ),
+              );
             },
             child: new Hero(
               tag: 'articleImageTag${widget.index}',
@@ -109,16 +122,17 @@ class ArticlePageState extends State<ArticlePage> {
             ),
           ),
           new Divider(),
-          new ArticleBar(reducedPercentage: nibble == null ? "" : nibble['sm_api_content_reduced']),
+          new ArticleBar(
+              reducedPercentage:
+                  nibble == null ? "" : nibble['sm_api_content_reduced']),
           new Padding(
             padding: const EdgeInsets.all(8.0),
             child: new Text(
-              // nibble['sm_api_content'].replaceAll(RegExp(r"(\[BREAK\])"), "\n"),
               nibble == null ? "" : nibble['sm_api_content'],
               style: Theme.of(context).textTheme.body1,
             ),
           ),
-          new ExternalBar(url: widget.article['url']),
+          new ExternalBar(url: widget.article['url'], source: widget.article['source']['name']),
         ],
       ),
     );

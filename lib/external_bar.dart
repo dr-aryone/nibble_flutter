@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class ExternalBar extends StatelessWidget {
-
   final String url;
+  final String source;
 
-  ExternalBar ({this.url});
+  ExternalBar({this.url, this.source});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,17 @@ class ExternalBar extends StatelessWidget {
           icon: new Icon(Icons.expand_more),
           label: new Text("Give me the full byte"),
           onPressed: () {
-            print("Navigate to new webview");
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => new WebviewScaffold(
+                      url: url,
+                      appBar: new AppBar(
+                        title: new Text(source),
+                      ),
+                    ),
+              ),
+            );
           },
         ),
         new IconButton(
