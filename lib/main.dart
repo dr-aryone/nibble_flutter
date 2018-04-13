@@ -44,14 +44,6 @@ class HomePageState extends State<HomePage> {
   bool refreshing = false;
   int currentPage = 1;
 
-  launchURL(url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -61,6 +53,7 @@ class HomePageState extends State<HomePage> {
   @override
   void dispose() {
     super.dispose();
+    scrollController.dispose();
   }
 
   List articles;
