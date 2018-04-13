@@ -144,13 +144,25 @@ class HomePageState extends State<HomePage> {
     return getArticles();
   }
 
+  String getTimeString(String publishedAt) {
+    final Duration difference = new DateTime.now().difference(DateTime.parse(publishedAt));
+    final int days = difference.inDays;
+    final int hours = difference.inHours;
+    final int minutes = difference.inMinutes;
+
+    if (days > 0) {
+      return "$days days ago";
+    } else if (hours > 0) {
+      return "$hours hours ago";
+    } else {
+      return "$minutes minutes ago";
+    }
+
+  }
+
   Widget buildList(BuildContext context, int index) {
 
-    var articlePublishedTime = DateTime
-        .parse(articles[index]['publishedAt'])
-        .difference(new DateTime.now())
-        .inMinutes
-        .abs();
+    var articlePublishedTime = getTimeString(articles[index]['publishedAt']);
 
     return new InkWell(
       onTap: () {
@@ -213,7 +225,7 @@ class HomePageState extends State<HomePage> {
                         ),
                       ),
                       new Text(
-                        articlePublishedTime.toString() + ' minutes ago',
+                        articlePublishedTime,
                         style: new TextStyle(fontSize: 9.0, color: Colors.grey),
                         textAlign: TextAlign.left,
                       ),
