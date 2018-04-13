@@ -102,6 +102,20 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final startLoadingOffset = 80.0;
+
+    scrollController.addListener(() {
+      if ((scrollController.position.maxScrollExtent - scrollController.offset <
+              startLoadingOffset) &&
+          (loading == false)) {
+        this.setState(() {
+          loading = true;
+          currentPage += 1;
+        });
+
+        getArticles();
+      }
+    });
 
     ListView listView = new ListView.builder(
       controller: scrollController,
@@ -118,11 +132,9 @@ class HomePageState extends State<HomePage> {
         child: listView,
       ),
     );
-
   }
 
   Future<Null> handleRefresh() async {
-
     this.setState(() {
       articles = [];
       currentPage = 1;
@@ -130,24 +142,9 @@ class HomePageState extends State<HomePage> {
     });
 
     return getArticles();
-
   }
 
   Widget buildList(BuildContext context, int index) {
-    final startLoadingOffset = 80.0;
-
-    scrollController.addListener(() {
-      if ((scrollController.position.maxScrollExtent - scrollController.offset <
-              startLoadingOffset) &&
-          (loading == false)) {
-        this.setState(() {
-          loading = true;
-          currentPage += 1;
-        });
-
-        getArticles();
-      }
-    });
 
     var articlePublishedTime = DateTime
         .parse(articles[index]['publishedAt'])
