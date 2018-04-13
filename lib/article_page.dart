@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import './external_bar.dart';
 import './article_bar.dart';
 import './key.dart';
 
@@ -117,6 +118,7 @@ class ArticlePageState extends State<ArticlePage> {
               style: Theme.of(context).textTheme.body1,
             ),
           ),
+          new ExternalBar(url: widget.article['url']),
         ],
       ),
     );
