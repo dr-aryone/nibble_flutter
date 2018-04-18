@@ -6,6 +6,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'dart:convert';
 
+import './components/loading_indicator.dart';
+
 import './article_page.dart';
 import './key.dart';
 
@@ -88,8 +90,14 @@ class HomePageState extends State<HomePage> {
 
     ListView listView = new ListView.builder(
       controller: scrollController,
-      itemCount: articles == null ? 0 : articles.length,
-      itemBuilder: buildList,
+      itemCount: articles == null ? 0 : articles.length + 1,
+      itemBuilder: (context, index) {
+        if (index == articles.length) {
+          return LoadingIndicator(loading: loading);
+        } else {
+          return buildList(context, index);
+        }
+      },
     );
 
   return new RefreshIndicator(
