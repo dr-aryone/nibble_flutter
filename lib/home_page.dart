@@ -62,13 +62,17 @@ class HomePageState extends State<HomePage> {
 
     List fetchedArticles = data['articles'];
 
-    this.setState(() {
-      articles = this.articles == null || this.refreshing == true
-          ? fetchedArticles
-          : new List.from(this.articles..addAll(fetchedArticles));
-      loading = false;
-      refreshing = false;
-    });
+    if (!mounted) {
+      return;
+    } else {
+      this.setState(() {
+        articles = this.articles == null || this.refreshing == true
+            ? fetchedArticles
+            : new List.from(this.articles..addAll(fetchedArticles));
+        loading = false;
+        refreshing = false;
+      });
+    }
   }
 
   @override
@@ -100,10 +104,10 @@ class HomePageState extends State<HomePage> {
       },
     );
 
-  return new RefreshIndicator(
-                onRefresh: handleRefresh,
-                child: listView,
-              );
+    return new RefreshIndicator(
+      onRefresh: handleRefresh,
+      child: listView,
+    );
   }
 
   Future<Null> handleRefresh() async {

@@ -61,9 +61,13 @@ class ArticlePageState extends State<ArticlePage> {
 
     data['sm_api_content'] = formattedNibble;
 
-    this.setState(() {
-      nibble = data;
-    });
+    if (!mounted) {
+      return;
+    } else {
+      this.setState(() {
+        nibble = data;
+      });
+    }
   }
 
   launchURL(url) async {
@@ -132,7 +136,9 @@ class ArticlePageState extends State<ArticlePage> {
               style: Theme.of(context).textTheme.body1,
             ),
           ),
-          new ExternalBar(url: widget.article['url'], source: widget.article['source']['name']),
+          new ExternalBar(
+              url: widget.article['url'],
+              source: widget.article['source']['name']),
         ],
       ),
     );
