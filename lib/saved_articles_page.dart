@@ -12,14 +12,20 @@ class SavedArticlesPageState extends State<SavedArticlesPage> {
     return new Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: new Container(
-            height: 100.0,
-            child: new Image.asset('assets/loading.gif',)
+        new Padding(
+          padding: const EdgeInsets.only(bottom: 15.0),
+          child: new Icon(
+            Icons.check_circle,
+            size: 60.0,
+            color: Colors.green,
           ),
         ),
-        new Text("Sorry you don't have any articles saved yet!"),
+        new Text(
+          "You're all caught up. Start browsing!",
+          style: TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
       ],
     );
   }
