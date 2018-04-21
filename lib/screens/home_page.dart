@@ -6,11 +6,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'dart:convert';
 
-import './components/loading_indicator.dart';
+import '../components/loading_indicator.dart';
 
-import './models/article.dart';
+import '../models/article.dart';
 import './article_page.dart';
-import './key.dart';
+import '../configs/key.dart';
 
 class HomePage extends StatefulWidget {
   @override

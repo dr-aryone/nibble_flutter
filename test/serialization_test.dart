@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import '../lib/mock_data.dart';
+import './mock_data.dart';
 import '../lib/models/article.dart';
 
 void main() {

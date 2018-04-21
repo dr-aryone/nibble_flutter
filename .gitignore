@@ -8,4 +8,4 @@ build/
 ios/.generated/
 packages
 .flutter-plugins
-lib/key.dart
+lib/configs/key.dart

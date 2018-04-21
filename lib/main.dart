@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import './home_page.dart';
-import './saved_articles_page.dart';
-import './profile_page.dart';
+import './screens/home_page.dart';
+import './screens/saved_articles_page.dart';
+import './screens/profile_page.dart';
 
 void main() {
   MaterialPageRoute.debugEnableFadingRoutes =

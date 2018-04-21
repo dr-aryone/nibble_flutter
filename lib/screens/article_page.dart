@@ -8,10 +8,10 @@ import 'package:flutter/scheduler.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
-import './models/article.dart';
-import './external_bar.dart';
-import './article_bar.dart';
-import './key.dart';
+import '../models/article.dart';
+import '../components/external_bar.dart';
+import '../components/article_bar.dart';
+import '../configs/key.dart';
 
 class ArticlePage extends StatefulWidget {
   final Article article;
