@@ -8,6 +8,7 @@ import 'dart:convert';
 
 import './components/loading_indicator.dart';
 
+import './models/article.dart';
 import './article_page.dart';
 import './key.dart';
 
@@ -18,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   ScrollController scrollController = new ScrollController();
-  List articles;
+  List<Article> articles;
 
   bool loading = false;
   bool refreshing = false;
@@ -37,12 +38,14 @@ class HomePageState extends State<HomePage> {
   }
 
   Future<Null> getArticles() async {
-    var url = 'https://newsapi.org/v2/everything?';
-    var key = keys['news_api'];
-    var sources =
+    List<Article> fetchedArticles = new List();
+
+    final String url = 'https://newsapi.org/v2/everything?';
+    final String key = keys['news_api'];
+    final String sources =
         "ars-technica,crypto-coin-news,engadget,hacker-news,techcrunch,techradar,the-next-web,the-verge,wired";
-    var language = "en";
-    var pageSize = 20;
+    final String language = "en";
+    final int pageSize = 20;
 
     print("Retrieve Article");
     var response = await http.get(
@@ -58,11 +61,9 @@ class HomePageState extends State<HomePage> {
       },
     );
 
-    print(response.body);
-
     var data = json.decode(response.body);
 
-    List fetchedArticles = data['articles'];
+    data['articles'].forEach((article) => fetchedArticles.add(Article.fromMap(article)));
 
     if (!mounted) {
       return;
@@ -70,7 +71,7 @@ class HomePageState extends State<HomePage> {
       this.setState(() {
         articles = this.articles == null || this.refreshing == true
             ? fetchedArticles
-            : new List.from(this.articles..addAll(fetchedArticles));
+            : new List<Article>.from(this.articles..addAll(fetchedArticles));
         loading = false;
         refreshing = false;
       });
@@ -139,7 +140,7 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget buildList(BuildContext context, int index) {
-    var articlePublishedTime = getTimeString(articles[index]['publishedAt']);
+    var articlePublishedTime = getTimeString(articles[index].publishedAt);
 
     return new InkWell(
       onTap: () {
@@ -169,9 +170,9 @@ class HomePageState extends State<HomePage> {
                         tag: 'articleImageTag$index',
                         child: new CachedNetworkImage(
                           // placeholder: new CircularProgressIndicator(),
-                          imageUrl: articles[index]['urlToImage'] == null
+                          imageUrl: articles[index].urlToImage == null
                               ? 'http://shashgrewal.com/wp-content/uploads/2015/05/default-placeholder.png'
-                              : articles[index]['urlToImage'],
+                              : articles[index].urlToImage,
                           height: 80.0,
                           fit: BoxFit.cover,
                         ),
@@ -186,7 +187,7 @@ class HomePageState extends State<HomePage> {
                       new Hero(
                         tag: 'articleTitle$index',
                         child: new Text(
-                          articles[index]['title'],
+                          articles[index].title,
                           style: Theme.of(context).textTheme.subhead,
                           textAlign: TextAlign.left,
                           maxLines: 3,
@@ -195,7 +196,7 @@ class HomePageState extends State<HomePage> {
                       new Padding(
                         padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
                         child: new Text(
-                          articles[index]['source']['name'],
+                          articles[index].source['name'],
                           style:
                               new TextStyle(fontSize: 12.0, color: Colors.grey),
                           textAlign: TextAlign.left,

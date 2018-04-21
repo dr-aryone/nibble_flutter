@@ -8,12 +8,13 @@ import 'package:flutter/scheduler.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
+import './models/article.dart';
 import './external_bar.dart';
 import './article_bar.dart';
 import './key.dart';
 
 class ArticlePage extends StatefulWidget {
-  final Map article;
+  final Article article;
   final int index;
 
   ArticlePage({this.article, this.index});
@@ -39,7 +40,7 @@ class ArticlePageState extends State<ArticlePage> {
   Future getNibble() async {
     print("Getting Nibble");
     String key = keys['smmry_api'];
-    String url = widget.article['url'];
+    String url = widget.article.url;
     int length = 8;
 
     String endpoint = 'http://api.smmry.com/';
@@ -95,9 +96,9 @@ class ArticlePageState extends State<ArticlePage> {
                 context,
                 new MaterialPageRoute(
                   builder: (context) => new WebviewScaffold(
-                        url: widget.article['url'],
+                        url: widget.article.url,
                         appBar: new AppBar(
-                          title: new Text(widget.article['source']['name']),
+                          title: new Text(widget.article.source['name']),
                         ),
                       ),
                 ),
@@ -109,9 +110,9 @@ class ArticlePageState extends State<ArticlePage> {
                 clipper: new ArticleHeaderClipper(),
                 child: new CachedNetworkImage(
                   height: 200.0,
-                  imageUrl: widget.article['urlToImage'] == null
+                  imageUrl: widget.article.urlToImage == null
                       ? 'http://shashgrewal.com/wp-content/uploads/2015/05/default-placeholder.png'
-                      : widget.article['urlToImage'],
+                      : widget.article.urlToImage,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -120,7 +121,7 @@ class ArticlePageState extends State<ArticlePage> {
           new Padding(
             padding: const EdgeInsets.all(8.0),
             child: new Text(
-              widget.article['title'],
+              widget.article.title,
               style: Theme.of(context).textTheme.title,
               textAlign: TextAlign.center,
             ),
@@ -137,8 +138,8 @@ class ArticlePageState extends State<ArticlePage> {
             ),
           ),
           new ExternalBar(
-              url: widget.article['url'],
-              source: widget.article['source']['name']),
+              url: widget.article.url,
+              source: widget.article.source['name']),
         ],
       ),
     );
