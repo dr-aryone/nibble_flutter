@@ -58,6 +58,8 @@ class HomePageState extends State<HomePage> {
       },
     );
 
+    print(response.body);
+
     var data = json.decode(response.body);
 
     List fetchedArticles = data['articles'];
