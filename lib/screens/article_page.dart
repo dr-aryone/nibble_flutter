@@ -10,6 +10,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 import '../models/article.dart';
 import '../models/nibble.dart';
+import '../components/loading_indicator.dart';
 import '../components/external_bar.dart';
 import '../components/article_bar.dart';
 import '../configs/key.dart';
@@ -30,7 +31,6 @@ class ArticlePageState extends State<ArticlePage> {
   @override
   void initState() {
     super.initState();
-    getNibble();
   }
 
   @override
@@ -63,13 +63,7 @@ class ArticlePageState extends State<ArticlePage> {
 
     nibble = Nibble.fromMap(data);
 
-    if (!mounted) {
-      return;
-    } else {
-      this.setState(() {
-        nibble = nibble;
-      });
-    }
+    return nibble;
   }
 
   launchURL(url) async {
@@ -128,19 +122,37 @@ class ArticlePageState extends State<ArticlePage> {
             ),
           ),
           new Divider(),
-          new ArticleBar(
-              reducedPercentage:
-                  nibble == null ? "" : nibble.contentReduced),
-          new Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: new Text(
-              nibble == null ? "" : nibble.content,
-              style: Theme.of(context).textTheme.body1,
-            ),
+          new FutureBuilder(
+            future: getNibble().then((response) => nibble = response),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return new Text('Press button to start');
+                case ConnectionState.waiting:
+                  return new LoadingIndicator();
+                default:
+                  if (snapshot.hasError)
+                    return new Text('Error: ${snapshot.error}');
+                  else
+                    return new Column(
+                      children: <Widget>[
+                        new ArticleBar(
+                            reducedPercentage: nibble.contentReduced
+                        ),
+                        new Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: new Text(
+                            nibble.content,
+                            style: Theme.of(context).textTheme.body1,
+                          ),
+                        ),
+                      ],
+                    );
+              }
+            },
           ),
           new ExternalBar(
-              url: widget.article.url,
-              source: widget.article.source['name']),
+              url: widget.article.url, source: widget.article.source['name']),
         ],
       ),
     );

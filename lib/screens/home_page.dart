@@ -100,7 +100,7 @@ class HomePageState extends State<HomePage> {
       itemCount: articles == null ? 0 : articles.length + 1,
       itemBuilder: (context, index) {
         if (index == articles.length) {
-          return LoadingIndicator(loading: loading);
+          return LoadingIndicator();
         } else {
           return buildList(context, index);
         }
