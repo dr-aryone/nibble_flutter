@@ -9,6 +9,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 import '../models/article.dart';
+import '../models/nibble.dart';
 import '../components/external_bar.dart';
 import '../components/article_bar.dart';
 import '../configs/key.dart';
@@ -24,7 +25,7 @@ class ArticlePage extends StatefulWidget {
 }
 
 class ArticlePageState extends State<ArticlePage> {
-  Map nibble;
+  Nibble nibble;
 
   @override
   void initState() {
@@ -55,18 +56,18 @@ class ArticlePageState extends State<ArticlePage> {
 
     var data = json.decode(response.body);
 
-    print(data);
-
     var formattedNibble =
         data['sm_api_content'].replaceAll(RegExp(r"(\[BREAK\])"), "\n\n");
 
     data['sm_api_content'] = formattedNibble;
 
+    nibble = Nibble.fromMap(data);
+
     if (!mounted) {
       return;
     } else {
       this.setState(() {
-        nibble = data;
+        nibble = nibble;
       });
     }
   }
@@ -129,11 +130,11 @@ class ArticlePageState extends State<ArticlePage> {
           new Divider(),
           new ArticleBar(
               reducedPercentage:
-                  nibble == null ? "" : nibble['sm_api_content_reduced']),
+                  nibble == null ? "" : nibble.contentReduced),
           new Padding(
             padding: const EdgeInsets.all(8.0),
             child: new Text(
-              nibble == null ? "" : nibble['sm_api_content'],
+              nibble == null ? "" : nibble.content,
               style: Theme.of(context).textTheme.body1,
             ),
           ),
