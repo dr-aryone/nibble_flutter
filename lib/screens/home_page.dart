@@ -170,9 +170,7 @@ class HomePageState extends State<HomePage> {
                         tag: 'articleImageTag$index',
                         child: new CachedNetworkImage(
                           // placeholder: new CircularProgressIndicator(),
-                          imageUrl: articles[index].urlToImage == null
-                              ? 'http://shashgrewal.com/wp-content/uploads/2015/05/default-placeholder.png'
-                              : articles[index].urlToImage,
+                          imageUrl: articles[index].urlToImage,
                           height: 80.0,
                           fit: BoxFit.cover,
                         ),
