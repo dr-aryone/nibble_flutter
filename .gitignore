@@ -9,3 +9,4 @@ ios/.generated/
 packages
 .flutter-plugins
 lib/configs/key.dart
+flutter_01.log

@@ -43,7 +43,7 @@ class HomePageState extends State<HomePage> {
     final String url = 'https://newsapi.org/v2/everything?';
     final String key = keys['news_api'];
     final String sources =
-        "ars-technica,crypto-coin-news,engadget,hacker-news,techcrunch,techradar,the-next-web,the-verge,wired";
+        "ars-technica,engadget,hacker-news,techcrunch,techradar,the-next-web,the-verge,wired";
     final String language = "en";
     final int pageSize = 20;
 
